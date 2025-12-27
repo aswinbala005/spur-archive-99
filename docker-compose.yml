@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  # The Database (Neon Simulation)
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: archive99_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: archive99
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  # The Cache (Upstash Simulation)
+  redis:
+    image: redis:alpine
+    container_name: archive99_cache
+    ports:
+      - "6379:6379"
+    restart: always
+
+volumes:
+  postgres_data:
