@@ -1,0 +1,12 @@
+**/*.css
+*.css
+node_modules
+**/node_modules
+dist
+**/dist
+.svelte-kit
+**/.svelte-kit
+build
+**/build
+.vercel
+**/.vercel

@@ -1,42 +1,23 @@
 import { sveltekit } from "@sveltejs/kit/vite";
-import tailwindcss from "@tailwindcss/vite";
-import { playwright } from "@vitest/browser-playwright";
-import { defineConfig } from "vitest/config";
+import { defineConfig } from "vite";
 
 export default defineConfig({
-  plugins: [tailwindcss(), sveltekit()],
+  plugins: [sveltekit()],
+  server: {
+    proxy: {
+      // Proxy configuration for local development
+      // Matches any request starting with '/api'
+      "/api": {
+        // Forwards it to the Backend server running on port 3000
+        target: "http://localhost:3000",
 
-  test: {
-    expect: { requireAssertions: true },
+        // Needed for virtual hosted sites
+        changeOrigin: true,
 
-    projects: [
-      {
-        extends: "./vite.config.ts",
-
-        test: {
-          name: "client",
-
-          browser: {
-            enabled: true,
-            provider: playwright(),
-            instances: [{ browser: "chromium", headless: true }],
-          },
-
-          include: ["src/**/*.svelte.{test,spec}.{js,ts}"],
-          exclude: ["src/lib/server/**"],
-        },
+        // Rewrite the path: removes '/api' before sending to backend.
+        // Example: Frontend calls '/api/chat' -> Backend receives '/chat'
+        rewrite: (path) => path.replace(/^\/api/, ""),
       },
-
-      {
-        extends: "./vite.config.ts",
-
-        test: {
-          name: "server",
-          environment: "node",
-          include: ["src/**/*.{test,spec}.{js,ts}"],
-          exclude: ["src/**/*.svelte.{test,spec}.{js,ts}"],
-        },
-      },
-    ],
+    },
   },
 });

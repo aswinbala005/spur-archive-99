@@ -1,16 +1,42 @@
 {
   "compilerOptions": {
+    // --- Target & Module System ---
+    // Target modern Node.js environments (v20+)
     "target": "ES2022",
+    // Use the modern Node.js module system, which handles both CommonJS (require) and ES Modules (import)
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    // Include modern JavaScript library features
     "lib": ["ES2022"],
+
+    // --- Output ---
+    // Place compiled JavaScript files in the 'dist' directory
     "outDir": "dist",
-    "rootDir": "src",
+    // Generate .map.js files. This is CRITICAL for debugging.
+    // It allows error stack traces in 'dist/index.js' to point back to your original '.ts' files.
+    "sourceMap": true,
+
+    // --- Project Structure ---
+    // The root of your source files is the current directory ('.')
+    // This is necessary to include both 'src/' and 'drizzle.config.ts' in the compilation.
+    "rootDir": ".",
+
+    // --- Strictness & Code Quality ---
+    // Enable all strict type-checking options. This is the gold standard for preventing bugs.
     "strict": true,
+    // Ensures compatibility between CommonJS and ES Modules.
     "esModuleInterop": true,
+    // Skips type checking of all declaration files (*.d.ts) in node_modules. Improves performance.
     "skipLibCheck": true,
+    // Prevents bugs on case-insensitive file systems (like macOS/Windows).
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  // --- File Inclusion ---
+  // Tells TypeScript which files to compile.
+  "include": [
+    "src/**/*", // All TypeScript files within the 'src' directory
+    "drizzle.config.ts" // The Drizzle configuration file
+  ],
+  // Tells TypeScript which files to ignore.
+  "exclude": ["node_modules", "dist"]
 }

@@ -1,0 +1,12 @@
+nohup: ignoring input
+
+> frontend@0.0.1 dev
+> vite dev --host
+
+
+  VITE v7.3.0  ready in 622 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://10.73.74.145:5173/
+  ➜  Network: http://172.18.0.1:5173/
+Killed

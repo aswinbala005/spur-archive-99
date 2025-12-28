@@ -24,7 +24,8 @@ export const messages = pgTable("messages", {
     .notNull(),
   role: text("role", { enum: ["user", "ai"] }).notNull(),
   content: text("content").notNull(),
-  feedbackScore: integer("feedback_score"), // 1 = Thumbs Up, -1 = Thumbs Down
+  // Feedback score: 1 = Thumbs Up, -1 = Thumbs Down (Optional)
+  feedbackScore: integer("feedback_score"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -37,6 +38,9 @@ export const products = pgTable("products", {
   isFinalSale: boolean("is_final_sale").default(false),
   // Flexible JSON for vintage measurements (e.g., { pit_to_pit: "22in" })
   measurements: jsonb("measurements"),
+  gender: text("gender").notNull().default("Unisex"),
+  color: text("color").notNull().default("Multi"),
+  brand: text("brand").notNull().default("Vintage"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -44,7 +48,7 @@ export const products = pgTable("products", {
 export const documents = pgTable("documents", {
   id: serial("id").primaryKey(),
   content: text("content").notNull(), // The Policy text
-  // 384 dimensions matches the 'all-MiniLM-L6-v2' model we will use
+  // 384 dimensions matches the 'all-MiniLM-L6-v2' model we use in EmbeddingService
   embedding: vector("embedding", { dimensions: 384 }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });

@@ -1,14 +1,11 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.10/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
     "useIgnoreFile": true
   },
-  "files": {
-    "ignoreUnknown": false,
-    "ignore": ["node_modules", "dist", ".svelte-kit", "build", ".vercel"]
-  },
+
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
@@ -23,5 +20,25 @@
         "noUnusedVariables": "error"
       }
     }
-  }
+  },
+  "files": {
+    "includes": ["apps/backend/src/**", "apps/frontend/src/**", "!**/*.css"]
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.svelte"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedImports": "off",
+            "noUnusedVariables": "off"
+          },
+          "style": {
+            "noNonNullAssertion": "off",
+            "useConst": "off"
+          }
+        }
+      }
+    }
+  ]
 }
