@@ -11,7 +11,7 @@ const schema = Type.Object({
   ARCJET_KEY: Type.String(),
   QSTASH_URL: Type.String(),
   QSTASH_TOKEN: Type.String(),
-  APP_URL: Type.Optional(Type.String()),
+  APP_URL: Type.String({ default: "http://localhost:3000" }),
 });
 
 export const config = envSchema({
