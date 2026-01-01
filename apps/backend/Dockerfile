@@ -42,4 +42,4 @@ COPY --from=builder --chown=fastify:nodejs /app/apps/backend/package.json ./
 EXPOSE 3000
 
 # Start Command
-CMD ["node", "dist/index.js"]
+CMD ["node", "dist/src/index.js"]
