@@ -77,7 +77,7 @@ const chatRoutes: FastifyPluginAsync = async (fastify) => {
   });
 
   // POST /chat/reset - Start a new session
-  fastify.post("/chat/reset", async (req, reply) => {
+  fastify.post("/chat/reset", async (_req, reply) => {
     reply.clearCookie("sessionId", { path: "/" });
     return reply.send({ success: true });
   });
