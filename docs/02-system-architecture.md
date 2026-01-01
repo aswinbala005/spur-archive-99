@@ -2,7 +2,7 @@
 
 **Role**: The Blueprint of Archive 99.
 **Pattern**: Monolithic, Stateless API with "Hybrid Brain" Router.
-**Docs**: [Overview](./00-overview.md) | [Backend](./apps/backend/backend.md) | [Database](./04-database-schema.md)
+**Docs**: [Overview](./00-overview.md) | [Backend](../apps/backend/README.md) | [Database](./04-database-schema.md)
 
 ---
 
@@ -128,9 +128,9 @@ stateDiagram-v2
 
 We separate concerns strictly. A Route never talks to the DB directly.
 
-| Domain | directory | Responsibility | Docs |
+| Domain | Directory | Responsibility | Docs |
 | :--- | :--- | :--- | :--- |
-| **Interface** | `src/routes` | HTTP, Zod Validation, Auth. | [routes.md](../apps/backend/src/routes/routes.md) |
-| **Service** | `src/services` | Business Logic, AI Orchestration. | [services.md](../apps/backend/src/services/services.md) |
-| **Data** | `src/db` | Schema, SQL Queries, Migrations. | [db.md](../apps/backend/src/db/db.md) |
-| **Infrastructure** | `src/config` | Env Vars, Security, Queues. | [config.md](../apps/backend/src/config/config.md) |
+| **Interface** | `src/routes` | HTTP, Zod Validation, Auth. | [routes.md](../apps/backend/src/routes/README.md) |
+| **Service** | `src/services` | Business Logic, AI Orchestration. | [services.md](../apps/backend/src/services/README.md) |
+| **Data** | `src/db` | Schema, SQL Queries, Migrations. | [db.md](../apps/backend/src/db/README.md) |
+| **Infrastructure** | `src/config` | Env Vars, Security, Queues. | [config.md](../apps/backend/src/config/README.md) |

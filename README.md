@@ -70,7 +70,7 @@ graph TD
     cp apps/backend/.env.example apps/backend/.env
     # Edit .env with your keys
     ```
-    *See [07-setup.md](docs/07-setup.md) for the detailed key guide.*
+    *See [07-dev-guidelines.md](docs/07-dev-guidelines.md) for the detailed key guide.*
 
 3.  **Automated Setup**
     This script installs dependencies, generates Drizzle artifacts, pushes the schema, and seeds mock inventory.
@@ -147,57 +147,57 @@ spur-archive-99/
 │   │   ├── src/
 │   │   │   ├── config/          # Configuration & Environment
 │   │   │   │   ├── arcjet.ts    # Bot Protection Middleware Rules
-│   │   │   │   ├── config.md    # Documentation for Config
+│   │   │   │   ├── README.md    # Documentation for Config
 │   │   │   │   ├── cors.ts      # CORS Options (Frontend Origin)
 │   │   │   │   └── env.ts       # Zod Schema for .env Validation
 │   │   │   ├── db/              # Database Access Layer
-│   │   │   │   ├── db.md        # Documentation for DB
+│   │   │   │   ├── README.md        # Documentation for DB
 │   │   │   │   ├── index.ts     # Drizzle + Neon Connection Factory
 │   │   │   │   ├── migrate.ts   # Database Migration Runner
 │   │   │   │   ├── schema.ts    # Database Tables (Products, Messages)
 │   │   │   │   └── seed.ts      # Seeding Script (Mock Data)
 │   │   │   ├── plugins/         # Fastify Plugin Registrations
-│   │   │   │   ├── plugins.md   # Documentation for Plugins
+│   │   │   │   ├── README.md    # Documentation for Plugins
 │   │   │   │   └── sensible.ts  # Standard HTTP Error Helpers
 │   │   │   ├── routes/          # HTTP Route Handlers
 │   │   │   │   ├── chat.ts      # POST /chat (Main Agent Logic)
 │   │   │   │   ├── health.ts    # GET /health (Uptime Check)
 │   │   │   │   ├── hooks.ts     # POST /hooks (QStash Webhooks)
 │   │   │   │   ├── products.ts  # GET /products (Inventory Feed)
-│   │   │   │   └── routes.md    # Documentation for Routes
+│   │   │   │   └── README.md    # Documentation for Routes
 │   │   │   ├── scripts/         # Local Maintenance Scripts
 │   │   │   │   ├── reset.ts     # Nuclear Reset (Drop Tables)
-│   │   │   │   └── scripts.md   # Documentation for Scripts
+│   │   │   │   └── README.md    # Documentation for Scripts
 │   │   │   ├── services/        # Business Logic (Pure Functions)
 │   │   │   │   ├── InventoryService.ts # Stock Logic & SQL Filtering
 │   │   │   │   ├── LLMService.ts       # Vercel AI SDK Orchestration
 │   │   │   │   ├── RAGService.ts       # Vector Search & Retrieval
-│   │   │   │   └── services.md         # Documentation for Services
+│   │   │   │   └── README.md           # Documentation for Services
 │   │   │   ├── app.ts           # Application Factory (Testing)
 │   │   │   └── server.ts        # Main Entry Point (Production)
 │   │   ├── .dockerignore        # Exclude node_modules from Build
 │   │   ├── .env.example         # Template for Environment Vars
-│   │   ├── backend.md           # Backend Specific Readme
+│   │   ├── README.md            # Backend Specific Readme
 │   │   ├── Dockerfile           # Multi-stage Container Build
 │   │   ├── drizzle.config.ts    # Drizzle Kit Configuration
 │   │   ├── package.json         # Backend Dependencies
 │   │   └── tsconfig.json        # Strict TypeScript Config
 │   │
-│   └── frontend/                # SvelteKit UI (The Storefront)
+/   └── frontend/                # SvelteKit UI (The Storefront)
 │       ├── src/
 │       │   ├── lib/
 │       │   │   ├── components/  # Reusable UI Atoms
 │       │   │   │   ├── ui/      # ShadCN Primitives (Button, etc)
 │       │   │   │   │   └── ...
-│       │   │   │   └── components.md # Docs for Components
+│       │   │   │   └── README.md # Docs for Components
 │       │   │   ├── widget/      # Chat Widget Feature
 │       │   │   │   ├── ChatBubble.svelte # Single Message Bubble
 │       │   │   │   ├── ChatInput.svelte  # Resizable Textarea
 │       │   │   │   ├── ChatWindow.svelte # Main Chat Container
 │       │   │   │   ├── ChatWidget.svelte # Floating Trigger Button
 │       │   │   │   ├── icons.ts          # SVG Icons (Spinner, Arrow)
-│       │   │   │   └── widget.md         # Docs for Widget
-│       │   │   ├── lib.md       # Docs for Shared Libj
+│       │   │   │   └── README.md         # Docs for Widget
+│       │   │   ├── README.md    # Docs for Shared Lib
 │       │   │   ├── types.ts     # Shared TS Interfaces
 │       │   │   └── utils.ts     # CN (ClassNames) Helper
 │       │   ├── routes/          # File-based Routing
@@ -208,15 +208,15 @@ spur-archive-99/
 │       │   │   ├── +error.svelte  # Global Error Boundary
 │       │   │   ├── +layout.svelte # Main Navigation Wrapper
 │       │   │   ├── +page.svelte   # Home Page (Landing)
-│       │   │   └── pages.md       # Docs for Routing
+│       │   │   └── README.md      # Docs for Routing
 │       │   ├── app.css          # Global Tailwind Styles
 │       │   ├── app.d.ts         # SvelteKit Type Defs
-│       │   └── app.html         # HTML Skeleton
+│       │   ├── app.html         # HTML Skeleton
 │       ├── static/              # Static Assets
 │       │   └── favicon.png
 │       ├── .dockerignore        # Exclude files from Vercel Build
 │       ├── .npmrc               # NPM Config
-│       ├── frontend.md          # Frontend Specific Readme
+│       ├── README.md            # Frontend Specific Readme
 │       ├── components.json      # ShadCN Config
 │       ├── package.json         # Frontend Dependencies
 │       ├── postcss.config.js    # PostCSS Config
@@ -237,13 +237,13 @@ spur-archive-99/
 │   ├── 04-database-schema.md    # ERD & SQL Strategy
 │   ├── 05-ai-engine.md          # AI Persona & Tool Logic
 │   ├── 06-api-specification.md  # API Contract & Errors
-│   ├── 09-dev-guidelines.md     # Setup & Coding Standards
-│   ├── 10-roadmap.md            # Future Feature Plans
-│   ├── 11-testing.md            # QA & Evals Strategy
-│   ├── 12-troubleshooting.md    # Operational Runbook
-│   ├── 13-security.md           # Security & Threat Model
-│   ├── 14-deployment.md         # Ops Manual (Render/Vercel)
-│   └── 15-tradeoffs.md          # Analysis of Decisions
+│   ├── 07-dev-guidelines.md     # Setup & Coding Standards
+│   ├── 08-roadmap.md            # Future Feature Plans
+│   ├── 09-testing.md            # QA & Evals Strategy
+│   ├── 10-troubleshooting.md    # Operational Runbook
+│   ├── 11-security.md           # Security & Threat Model
+│   ├── 12-deployment.md         # Ops Manual (Render/Vercel)
+│   └── 13-tradeoffs.md          # Analysis of Decisions
 │
 ├── packages/                    # Monorepo Shared Tools
 ├── .dockerignore                # Global Docker Ignore
@@ -271,26 +271,28 @@ We believe in **"Documentation as Code"**. Every layer is documented in detail.
 | [**04-Database**](docs/04-database-schema.md) | Data Engineers | ER Diagrams & `pgvector` strategy. |
 | [**05-AI-Engine**](docs/05-ai-engine.md) | AI Engineers | Aria's Persona, System Prompt, and RAG. |
 | [**06-API-Spec**](docs/06-api-specification.md) | Frontend Devs | Contract for `/chat`, `/hooks`. |
-| [**09-Dev-Guide**](docs/09-dev-guidelines.md) | Contributors | File Structure, Standards, and Workflow. |
-| [**10-Roadmap**](docs/10-roadmap.md) | Product Managers | Future enterprise features (Stripe, Voice). |
-| [**11-Testing**](docs/11-testing.md) | QA / SDET | Testing Strategy (Deterministic vs Evals). |
-| [**12-Ops-Manual**](docs/12-troubleshooting.md) | DevOps | Operational Runbook & Emergency Reset. |
-| [**13-Security**](docs/13-security.md) | InfoSec | Threat Model, Arcjet, and Defense Layers. |
-| [**14-Deployment**](docs/14-deployment.md) | DevOps | Render/Vercel Production Guide. |
-| [**15-Tradeoffs**](docs/15-tradeoffs.md) | Architects | "Why Monolith?" & "Why Fastify?" Analysis. |
+| [**07-Dev-Guide**](docs/07-dev-guidelines.md) | Contributors | File Structure, Standards, and Workflow. |
+| [**08-Roadmap**](docs/08-roadmap.md) | Product Managers | Future enterprise features (Stripe, Voice). |
+| [**09-Testing**](docs/09-testing.md) | QA / SDET | Testing Strategy (Deterministic vs Evals). |
+| [**10-Ops-Manual**](docs/10-troubleshooting.md) | DevOps | Operational Runbook & Emergency Reset. |
+| [**11-Security**](docs/11-security.md) | InfoSec | Threat Model, Arcjet, and Defense Layers. |
+| [**12-Deployment**](docs/12-deployment.md) | DevOps | Render/Vercel Production Guide. |
+| [**13-Tradeoffs**](docs/13-tradeoffs.md) | Architects | "Why Monolith?" & "Why Fastify?" Analysis. |
 
 ---
 
-## 👩‍💻 Contributing
+## 🤝 Connect and Collaboration
 
-We welcome contributions from the community!
-Please read our [Development Guidelines](docs/09-dev-guidelines.md) for Pull Request conventions and Coding Standards.
+**Archive 99** is built by **Aswin Bala**.
+If you are interested in collaborating, researching AI Agent patterns, or just want to chat about vintage fashion tech:
 
-1.  **Fork** the repo.
-2.  **Branch**: `git checkout -b feat/your-feature`.
-3.  **Commit**: `git commit -m "feat: Add Voice Mode"`.
-4.  **Push**: `git push origin feat/your-feature`.
-5.  **PR**: Open a Pull Request on GitHub.
+*   **Email**: `aswinbala316@gmail.com`
+*   **LinkedIn**: [Aswin Bala](https://www.linkedin.com/in/aswin-bala-612b23240)
+*   **GitHub**: [@aswinbala005](https://github.com/aswinbala005)
+
+> "We are building the interface, not just the infrastructure."
+
+---
 
 ## 📄 License
 
@@ -299,7 +301,7 @@ Distributed under the **MIT License**. This project is open-source and free to u
 ## 🆘 Support
 
 Encountered a bug or have a question?
-*   Check the [Troubleshooting Guide](docs/12-troubleshooting.md) first.
+*   Check the [Troubleshooting Guide](docs/10-troubleshooting.md) first.
 *   Open a [GitHub Issue](https://github.com/aswinbala005/spur-archive-99/issues).
 *   Reach out to the maintainers via Email.
 
