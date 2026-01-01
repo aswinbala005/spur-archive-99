@@ -5,9 +5,11 @@ import { marked } from "marked";
 
 // Svelte 5 Props: Typed strictly
 // Note: We use 'let' for props in Svelte 5 runes mode
-const { role, content } = $props<{
+const { role, content, id, initialFeedback } = $props<{
   role: string;
   content: string;
+  id?: number;
+  initialFeedback?: number; // 1 for up, -1 for down
 }>();
 
 // Svelte 5 Derived State: Updates automatically when content changes
@@ -19,7 +21,16 @@ const safeHtml = $derived.by(() => {
   return DOMPurify.sanitize(raw);
 });
 
+// Initialize state
 let feedbackStatus = $state<"up" | "down" | null>(null);
+
+// Sync prop to state (handles component reuse or prop updates)
+$effect(() => {
+  if (initialFeedback !== undefined) {
+    feedbackStatus =
+      initialFeedback === 1 ? "up" : initialFeedback === -1 ? "down" : null;
+  }
+});
 
 async function sendFeedback(type: "up" | "down") {
   if (feedbackStatus) return; // Prevent spam
@@ -31,7 +42,7 @@ async function sendFeedback(type: "up" | "down") {
     await fetch("/api/feedback", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ feedback: type, sessionId: "current-session" }), // In real app, sessionId comes from context
+      body: JSON.stringify({ feedback: type, messageId: id }),
     });
     console.log(`Feedback sent: ${type}`);
   } catch (e) {
@@ -61,7 +72,7 @@ async function sendFeedback(type: "up" | "down") {
 		  </div>
 
           {#if role === "assistant"}
-            <div class={`absolute -bottom-6 left-0 flex items-center gap-2 transition-opacity ${feedbackStatus ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+            <div class={`absolute -bottom-6 left-0 flex items-center gap-2 transition-opacity ${feedbackStatus ? 'opacity-100' : 'opacity-50 group-hover:opacity-100'}`}>
                 <button 
                     class={`p-1 text-neutral-400 hover:bg-neutral-100 rounded-full transition-colors hover:text-green-500 ${feedbackStatus === 'up' ? 'text-green-500' : ''}`} 
                     aria-label="Helpful" 

@@ -5,8 +5,8 @@
 	  - Icons: Lucide icons for the UI.
 	  - tick: Svelte utility to wait for DOM updates (crucial for auto-scroll).
 	*/
-import { MessageSquare, Send, Sparkles, X } from "lucide-svelte";
-import { tick } from "svelte";
+import { MessageSquare, RefreshCcw, Send, Sparkles, X } from "lucide-svelte";
+import { onMount, tick } from "svelte";
 import { Button } from "$lib/components/ui/button";
 import { Input } from "$lib/components/ui/input";
 import MessageBubble from "./MessageBubble.svelte";
@@ -26,10 +26,30 @@ let inputValue = $state("");
 /* AI SDK INTEGRATION */
 
 // Manual message management since Chat class format doesn't match backend
-let messages = $state<Array<{ role: "user" | "assistant"; content: string }>>(
-  [],
-);
+let messages = $state<
+  Array<{
+    id?: number;
+    role: "user" | "assistant";
+    content: string;
+    feedback?: number;
+  }>
+>([]);
 let isLoading = $state(false);
+
+// Hydrate history on mount
+onMount(async () => {
+  try {
+    const res = await fetch("/api/chat/messages");
+    if (res.ok) {
+      const history = await res.json();
+      if (Array.isArray(history) && history.length > 0) {
+        messages = history;
+      }
+    }
+  } catch (err) {
+    console.error("Failed to load history:", err);
+  }
+});
 
 // Handle form submission
 async function handleSubmit(e: Event) {
@@ -107,11 +127,25 @@ async function handleSubmit(e: Event) {
       ...messages,
       {
         role: "assistant",
-        content: "Sorry, I encountered an error. Please try again.",
+        content:
+          error instanceof Error
+            ? error.message
+            : "Sorry, I encountered an error. Please try again.",
       },
     ];
   } finally {
     isLoading = false;
+  }
+}
+
+async function handleReset() {
+  if (confirm("Start a new chat? This will clear your history.")) {
+    try {
+      await fetch("/api/chat/reset", { method: "POST" });
+      messages = [];
+    } catch (e) {
+      console.error("Failed to reset chat", e);
+    }
   }
 }
 
@@ -206,12 +240,19 @@ $effect(() => {
 					<div class="flex flex-col">
 						<h3 class="font-bold text-lg tracking-tight text-neutral-900">Aria</h3>
 						<span class="text-[10px] uppercase tracking-widest text-neutral-400 font-bold">Archive 99 Support</span>
+
 					</div>
 				</div>
-				<!-- Close Button -->
-				<Button variant="ghost" size="icon" class="h-10 w-10 rounded-full hover:bg-neutral-100 transition-colors" onclick={() => (isOpen = false)}>
-					<X class="h-5 w-5 text-neutral-500" />
-				</Button>
+				<div class="flex items-center gap-1">
+					<!-- Reset Button -->
+					<Button variant="ghost" size="icon" class="h-10 w-10 rounded-full hover:bg-neutral-100 transition-colors" onclick={handleReset} title="New Chat">
+						<RefreshCcw class="h-4 w-4 text-neutral-500" />
+					</Button>
+					<!-- Close Button -->
+					<Button variant="ghost" size="icon" class="h-10 w-10 rounded-full hover:bg-neutral-100 transition-colors" onclick={() => (isOpen = false)}>
+						<X class="h-5 w-5 text-neutral-500" />
+					</Button>
+				</div>
 			</div>
 
 		<!-- B. Messages Area (Scrollable) -->
@@ -237,7 +278,7 @@ $effect(() => {
 
 			<!-- Message List: Iterates over the messages array -->
 			{#each messages as m, i (i)}
-				<MessageBubble role={m.role} content={m.content} />
+				<MessageBubble role={m.role} content={m.content} id={m.id} initialFeedback={m.feedback} />
 			{/each}
 
 			<!-- Loading Indicator: Shown when the AI is generating a response -->
@@ -278,4 +319,5 @@ $effect(() => {
 		</div>
 	</div>
 	</div>
+
 {/if}

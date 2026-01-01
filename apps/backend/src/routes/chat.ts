@@ -8,8 +8,11 @@ import {
   retry,
   wrap,
 } from "cockatiel";
+import { asc, eq } from "drizzle-orm";
 import type { FastifyPluginAsync } from "fastify";
 import { config } from "../config/env";
+import { db } from "../db";
+import { messages as messagesTable } from "../db/schema";
 import { LLMService } from "../services/LLMService";
 import { qstash } from "../services/QStashService";
 import { RateLimitService } from "../services/RateLimitService";
@@ -20,7 +23,7 @@ const ChatBodySchema = Type.Object({
   messages: Type.Array(
     Type.Object({
       role: Type.Union([Type.Literal("user"), Type.Literal("assistant")]),
-      content: Type.String({ maxLength: 1000 }),
+      content: Type.String({ maxLength: 1000, minLength: 1 }),
     }),
   ),
 });
@@ -44,6 +47,41 @@ const aj = arcjet({
 });
 
 const chatRoutes: FastifyPluginAsync = async (fastify) => {
+  // GET /chat/messages - Retrieve conversation history
+  fastify.get("/chat/messages", async (req, reply) => {
+    const sessionId = req.session.id;
+    if (!sessionId) {
+      return reply.send([]);
+    }
+
+    try {
+      const history = await db
+        .select()
+        .from(messagesTable)
+        .where(eq(messagesTable.sessionId, sessionId))
+        .orderBy(asc(messagesTable.createdAt));
+
+      // Map to UI format
+      const uiMessages = history.map((msg) => ({
+        id: msg.id,
+        role: msg.role === "ai" ? "assistant" : "user",
+        content: msg.content,
+        feedback: msg.feedbackScore, // 1 for up, -1 for down, null for none
+      }));
+
+      return reply.send(uiMessages);
+    } catch (error) {
+      req.log.error(error);
+      return reply.status(500).send({ error: "Failed to fetch history" });
+    }
+  });
+
+  // POST /chat/reset - Start a new session
+  fastify.post("/chat/reset", async (req, reply) => {
+    reply.clearCookie("sessionId", { path: "/" });
+    return reply.send({ success: true });
+  });
+
   fastify.post(
     "/chat",
     {

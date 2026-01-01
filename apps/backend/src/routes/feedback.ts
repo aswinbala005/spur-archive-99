@@ -5,8 +5,7 @@ import { db } from "../db";
 import { messages } from "../db/schema";
 
 const FeedbackSchema = Type.Object({
-  messageId: Type.Optional(Type.String()), // meaningful if we tracked message IDs in FE
-  sessionId: Type.String(),
+  messageId: Type.Optional(Type.Integer()), // meaningful if we tracked message IDs in FE
   feedback: Type.Union([Type.Literal("up"), Type.Literal("down")]),
 });
 
@@ -19,35 +18,53 @@ const feedbackRoutes: FastifyPluginAsync = async (fastify) => {
       },
     },
     async (req, reply) => {
-      const { feedback, sessionId } = req.body as {
+      const { feedback, messageId } = req.body as {
         feedback: "up" | "down";
-        sessionId: string;
+        messageId?: number;
       };
+      const sessionId = req.session.id; // Use secure cookie ID
       const score = feedback === "up" ? 1 : -1;
 
       req.log.info(
-        `👍 Feedback received: ${feedback} (${score}) for session ${sessionId}`,
+        `👍 Feedback received: ${feedback} (${score}) for session ${sessionId} (msg: ${messageId || "latest"})`,
       );
 
       try {
-        // 1. Find the most recent AI message for this session
-        const latestAiMessage = await db.query.messages.findFirst({
-          where: and(
-            eq(messages.sessionId, sessionId),
-            eq(messages.role, "ai"),
-          ),
-          orderBy: [desc(messages.createdAt)],
-        });
+        let targetMessageId: number | undefined;
 
-        if (latestAiMessage) {
+        if (messageId) {
+          // Validate ownership
+          const msg = await db.query.messages.findFirst({
+            where: and(
+              eq(messages.id, messageId),
+              eq(messages.sessionId, sessionId),
+              eq(messages.role, "ai"),
+            ),
+          });
+          if (msg) targetMessageId = msg.id;
+        }
+
+        if (!targetMessageId) {
+          // Fallback: Find the most recent AI message for this session
+          const latestAiMessage = await db.query.messages.findFirst({
+            where: and(
+              eq(messages.sessionId, sessionId),
+              eq(messages.role, "ai"),
+            ),
+            orderBy: [desc(messages.createdAt)],
+          });
+          if (latestAiMessage) targetMessageId = latestAiMessage.id;
+        }
+
+        if (targetMessageId) {
           // 2. Update the score
           await db
             .update(messages)
             .set({ feedbackScore: score })
-            .where(eq(messages.id, latestAiMessage.id));
+            .where(eq(messages.id, targetMessageId));
 
           req.log.info(
-            `✅ Updated message ${latestAiMessage.id} with score ${score}`,
+            `✅ Updated message ${targetMessageId} with score ${score}`,
           );
           return { success: true };
         } else {

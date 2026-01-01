@@ -4,6 +4,7 @@
   "private": true,
   "description": "Archive 99 - AI Support Agent Monorepo",
   "scripts": {
+    "dev": "pnpm --filter backend dev & pnpm --filter frontend dev",
     "dev:frontend": "pnpm --filter frontend dev",
     "dev:backend": "pnpm --filter backend dev",
     "check": "biome check",
