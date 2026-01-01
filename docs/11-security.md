@@ -67,7 +67,7 @@ We use a strict validation schema in `src/config/env.ts`.
 
 ### Dependency Scanning
 *   We use `pnpm audit` in CI to detect vulnerabilities in `node_modules`.
-*   Docker images are built from `node:20-alpine`, minimizing the attack surface (no shell access in prod containers).
+*   Docker images are built from `node:20-slim` (Debian), required for glibc compatibility with `onnxruntime-node`.
 
 ---
 

@@ -1,7 +1,14 @@
-# 14. Deployment & Operations Strategy
+# 12. Deployment & Operations Strategy
 
 **Role**: How to ship code to production and keep it alive.
-**Status**: Passive Scaling (Serverless).
+**Status**: ✅ **LIVE**
+
+### 🌐 Production URLs
+
+| Service | URL |
+|---------|-----|
+| **Frontend** | [spur-archive-99.vercel.app](https://spur-archive-99.vercel.app) |
+| **Backend** | [archive-99-api.onrender.com](https://archive-99-api.onrender.com) |
 
 ---
 
@@ -22,7 +29,7 @@ We do not run a single server. We use specialized providers for each domain.
 
 The Backend is containerized.
 *   **Source**: [apps/backend/Dockerfile](../apps/backend/Dockerfile)
-*   **Build**: Multi-stage lightweight build (`node:20-alpine`).
+*   **Build**: Multi-stage build using `node:20-slim` (Debian for glibc compatibility).
 
 ### Environment Variables
 *See [apps/backend/src/config/config.md](../apps/backend/src/config/config.md) for keys.*
@@ -30,7 +37,7 @@ The Backend is containerized.
 You must set these in Render Dashboard:
 1.  `DATABASE_URL`: Connection string from Neon ("Pooled" version).
 2.  `GROQ_API_KEY`: For LLM.
-3.  `APP_URL`: The public `https://...onrender.com` URL (Vital for Webhook callbacks).
+3.  `APP_URL`: `https://archive-99-api.onrender.com` (Vital for Webhook callbacks).
 
 ### Health Checks
 Render hits `/health` every 10 seconds.
@@ -46,7 +53,7 @@ The Storefront is a static/SSR hybrid.
 ### Proxy Configuration
 To avoid CORS issues and keep the API hidden, Vercel proxies requests to Render.
 *   *Config*: [apps/frontend/vercel.json](../apps/frontend/vercel.json)
-*   **Rule**: `/api/*` -> `https://spur-archive-backend.onrender.com/*`
+*   **Rule**: `/api/*` -> `https://archive-99-api.onrender.com/*`
 
 ### CI/CD Pipeline
 1.  Push to `main`.

@@ -11,6 +11,13 @@ She doesn't just "search keywords"; she understands:
 
 ![Node](https://img.shields.io/badge/node-v20-green.svg) ![Svelte](https://img.shields.io/badge/svelte-v5-orange.svg) ![Fastify](https://img.shields.io/badge/fastify-v5-black.svg) ![Database](https://img.shields.io/badge/neon-serverless-purple.svg) ![Latency](https://img.shields.io/badge/latency-%3C200ms-brightgreen.svg) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
+### 🌐 Live Demo
+
+| Service | URL |
+|---------|-----|
+| **Frontend (Storefront)** | [spur-archive-99.vercel.app](https://spur-archive-99.vercel.app) |
+| **Backend (API)** | [archive-99-api.onrender.com](https://archive-99-api.onrender.com) |
+
 ---
 
 ## 🏗️ Architecture: The "Hybrid Brain"

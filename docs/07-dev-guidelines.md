@@ -91,7 +91,7 @@ pnpm format
 
 **Technology**
 -   **Framework**: Fastify v5
--   **Runtime**: Node.js v20 (Alpine Linux in Docker)
+-   **Runtime**: Node.js v20 (Debian Slim in Docker for glibc compatibility)
 -   **Validation**: TypeBox / Zod
 
 **Layers with Examples**
