@@ -1,5 +1,5 @@
-# Use Node 20 Alpine for small size
-FROM node:20-alpine AS base
+# Use Node 20 Slim (Debian-based) for glibc compatibility with onnxruntime
+FROM node:20-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -29,8 +29,8 @@ FROM base AS runner
 WORKDIR /app
 
 # Create a non-root user for security
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 fastify
+RUN groupadd --system --gid 1001 nodejs
+RUN useradd --system --uid 1001 fastify
 USER fastify
 
 # Copy the DEPLOYED application (which includes flat node_modules and built dist)
