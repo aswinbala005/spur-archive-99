@@ -22,7 +22,7 @@ WORKDIR /app/apps/backend
 RUN pnpm build
 
 # Deploy the backend to a specific directory (this purely isolates the backend + prod deps)
-RUN pnpm deploy --filter=backend --prod /app/deployed
+RUN pnpm deploy --filter=backend --prod --legacy /app/deployed
 
 # 2. Runner Stage (Production)
 FROM base AS runner
