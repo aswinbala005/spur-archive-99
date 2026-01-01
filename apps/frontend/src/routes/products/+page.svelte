@@ -22,7 +22,7 @@ let visible = false;
 onMount(async () => {
   try {
     // Fetch from our new Backend API
-    const res = await fetch("http://localhost:3000/products");
+    const res = await fetch("/api/products");
     products = await res.json();
   } catch (e) {
     console.error("Failed to load products:", e);
