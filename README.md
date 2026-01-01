@@ -281,6 +281,17 @@ We believe in **"Documentation as Code"**. Every layer is documented in detail.
 
 ---
 
+## 👩‍💻 Contributing
+
+We welcome contributions from the community!
+Please read our [Development Guidelines](docs/07-dev-guidelines.md) for Pull Request conventions and Coding Standards.
+
+1.  **Fork** the repo.
+2.  **Branch**: `git checkout -b feat/your-feature`.
+3.  **Commit**: `git commit -m "feat: Add Voice Mode"`.
+4.  **Push**: `git push origin feat/your-feature`.
+5.  **PR**: Open a Pull Request on GitHub.
+
 ## 🤝 Connect and Collaboration
 
 **Archive 99** is built by **Aswin Bala**.
