@@ -74,14 +74,14 @@ async function sendFeedback(type: "up" | "down") {
           {#if role === "assistant"}
             <div class={`absolute -bottom-6 left-0 flex items-center gap-2 transition-opacity ${feedbackStatus ? 'opacity-100' : 'opacity-50 group-hover:opacity-100'}`}>
                 <button 
-                    class={`p-1 text-neutral-400 hover:bg-neutral-100 rounded-full transition-colors hover:text-green-500 ${feedbackStatus === 'up' ? 'text-green-500 bg-green-50' : ''}`} 
+                    class={`p-1 text-neutral-400 hover:bg-neutral-100 rounded-full transition-colors hover:text-green-600 ${feedbackStatus === 'up' ? 'text-green-600 bg-green-100' : ''}`} 
                     aria-label="Helpful" 
                     onclick={() => sendFeedback("up")}
                 >
                      <ThumbsUp class="h-3 w-3" />
                 </button>
                 <button 
-                    class={`p-1 text-neutral-400 hover:bg-neutral-100 rounded-full transition-colors hover:text-red-500 ${feedbackStatus === 'down' ? 'text-red-500 bg-red-50' : ''}`} 
+                    class={`p-1 text-neutral-400 hover:bg-neutral-100 rounded-full transition-colors hover:text-red-600 ${feedbackStatus === 'down' ? 'text-red-600 bg-red-100' : ''}`} 
                     aria-label="Not Helpful" 
                     onclick={() => sendFeedback("down")}
                 >
